@@ -1,0 +1,16 @@
+INT a,b,c;
+FLOAT m;
+w{
+FLOAT x,y,z;
+x = 123_i;
+y = 12_i;
+z = x + y;
+}
+LOOP FROM a = b TO c BY b
+BEGIN
+	IF (a == c) THEN
+	BEGIN
+		a = b; 
+	END
+	ENDIF
+END

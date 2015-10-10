@@ -1,0 +1,11 @@
+INT a;
+a = 13_i;
+IF (a == b) THEN
+BEGIN
+	a = b;
+END
+ELSE
+BEGIN
+	b = a;
+END
+ENDIF

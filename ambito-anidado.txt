@@ -1,0 +1,16 @@
+FLOAT m;
+a{
+INT k;
+GLOBAL b,c,d;
+INT f;
+GLOBAL t;
+b = 123_i;
+c = 12_i;
+d = b + c;
+	j{
+		GLOBAL x,y,z;
+		x = 123_i;
+		y = 12_i;
+		z = b + c;	
+	}
+}

@@ -1,0 +1,41 @@
+//comentario//
+FLOAT m;
+INT a,b,c;
+FLOAT x;
+INT v;
+//comentario//
+a = 123_i;
+b = 12_i;
+c = 1_i;
+m = .32;
+//comentario//
+LOOP FROM a = b TO c BY b
+BEGIN
+	IF (a == c) THEN a = b;
+//comentario//	
+ENDIF
+END
+//comentario//
+h{
+GLOBAL b,c,d;
+b = 123_i;
+c = 12_i;
+d = b + c;
+	
+IF (a == b) THEN a = b;
+ENDIF
+}
+//comentario//
+TOFLOAT (a);
+IF (a == b) THEN
+BEGIN
+	a = b;
+END
+ELSE
+BEGIN
+	b = a;
+END
+ENDIF
+
+x = -12325_i;
+v = -124545454545454544454454e-2;

@@ -1,0 +1,13 @@
+STRING @a@@;
+INT a,b,c;
+PRINT('pruebaprint');
+a = 123_i;
+b = 12_i;
+c = 1_i;
+IF (a <> b) THEN 
+BEGIN 
+	j = c;
+	c = a;
+	b = a; 
+END
+ENDIF 

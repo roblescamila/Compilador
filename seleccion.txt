@@ -1,0 +1,5 @@
+INT a;
+a = 13_i;
+IF (a == b) THEN
+j = b;
+ENDIF

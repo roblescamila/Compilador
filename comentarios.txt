@@ -1,0 +1,16 @@
+//aca esta la declaracion de enteros//
+INT a,b;
+//asignamos la variable//
+a = 12_i;
+//asignamos un string aunque sea int//
+b = 'mensaje';
+//esto es un if//
+IF (a == b) THEN
+//aca empieza//
+BEGIN
+	a = b;
+END
+//y aca termina//
+ENDIF
+//los comentarios andan joya//
+//by mati y cami//
