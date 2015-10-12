@@ -6,8 +6,8 @@ import java.io.IOException;
 public class main {
 	public static void main(String[] args) throws IOException {
 		Messages msg = new Messages();
-		String a = args[0].toString();
-		File archivo = new File (a);
+		//String a = args[0].toString();
+		File archivo = new File ("archivo.txt");
 		FileReader fr = new FileReader (archivo);
 		BufferedReader br = new BufferedReader(fr);
 		String linea = new String();

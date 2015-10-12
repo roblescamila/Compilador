@@ -1,4 +1,6 @@
 INT a,b,c;
+
+STRING asd;
 FLOAT m;
 w{
 FLOAT x,y,z;
@@ -10,7 +12,9 @@ LOOP FROM a = b TO c BY b
 BEGIN
 	IF (a == c) THEN
 	BEGIN
-		a = b; 
+		a = h; 
 	END
 	ENDIF
 END
+
+PRINT ('carlos');
