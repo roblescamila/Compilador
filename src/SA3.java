@@ -13,9 +13,10 @@ public class SA3 extends SemanticAction {
 	}
 
 	public Token execute(Token token, char caracter) {
-		float f = Float.valueOf(token.getLexema().replace('e', 'E'));
+		token.setId(CONSTANT);
+		Float f = Float.valueOf(token.getLexema().replace('e', 'E'));
 		token.setLexema(String.valueOf(f));
-		if(f >= Float.MIN_VALUE && f <= Float.MAX_VALUE) { 
+//		if(1.17549435E-38 <=f.floatValue() && f.floatValue() <= 3.40282347E38) { 
 			if(ts.hasLexema(token.getLexema())) {
 				ts.getTSEntry(token.getLexema()).incCounter();
 				token.setTSEntry(ts.getTSEntry(token.getLexema()));
@@ -23,14 +24,15 @@ public class SA3 extends SemanticAction {
 			else {
 				token.setId(CONSTANT);
 				ts.addTSEntry(token.getLexema(), token.getETS());
-				ts.getTSEntry(token.getLexema()).setType("CONSTANTE");
+				ts.getTSEntry(token.getLexema()).setType("FLOAT");
 			}
-		}
-		else {
-			Error e = new Error(al.getLine(), al.getMessage(101), "Léxico"); 
-			m.addError(e);
-		}
+//		}
+//		else {
+//			Error e = new Error(al.getLine(), al.getMessage(101), "Léxico"); 
+//			m.addError(e);
+//		}
 		token.readCharNotAdded();
+	
 		return token;
 	}
 }

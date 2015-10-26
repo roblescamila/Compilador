@@ -54,8 +54,6 @@ public class TS {
         while (e.hasMoreElements()){
         	String aux =(String) e.nextElement();
             System.out.println("Lexema: " + aux + "  Tipo de token: " + lexemas.get(aux).getType());
-       
         }
     }  
-    
 }

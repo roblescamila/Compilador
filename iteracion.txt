@@ -3,6 +3,4 @@ a = 123_i;
 b = 12_i;
 c = 1_i;
 LOOP FROM a = b TO c BY b
-BEGIN
 	b = c; 
-END

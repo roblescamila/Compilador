@@ -1,96 +1,52 @@
-
+/*
 public class Terceto {
 
-	private TSEntry entry;
+	int num;
+	String operador, op1, op2;
 	
-//	private String type = "NADA";
-	private int rule;
-	private Terceto left, right;
-	private Token op;
-	
-	
-//	static Terceto backward = null; // puntero anterior
-//	Terceto pAnt = null;
-//	static char lastVisit;
-//	char uVis;
-
-	private static boolean error = false;
-
-//	public Terceto (Token t, Terceto l){
-//		left = l;
-//		op = t;
-//	}
-	
-	public Terceto (Token t, Terceto l, Terceto r){
-		left = l;
-		op = t;
-		right = r;
-	}
-	
-	public static void resetError(){
-		error = false;
-	}
-	public Terceto (TSEntry e ,String valor){
-		this.entry = e;
-//		this.value = valor;
-		this.right = null;
-		this.left = null;
-	}
-
-	public Terceto (String val, Terceto i , Terceto d){
-//		this.value = val;
-		this.left = i;
-		this.right = d;
-	}
-
-	public TSEntry getEntry() {
-		return entry;
-	}
-
-	public void setEntry(TSEntry e) {
-		this.entry = e;
-	}
-
-//	public void setValue (String v){
-//		this.value = v;
-//	}
-//
-//	public String getValue (){
-//		return this.value;
-//	}
-
-	public static void setError (){
-		error = true;
-	}
-
-	public static boolean hasError (){
-		return error;
-	}
-
-//	public void setTipo (String t){
-//		this.type = t;
-//	}
-//
-//	public String getTipo (){
-//		return this.type;
-//	}
+	public Terceto(String opera, String o1 , String o2){
+		operador = opera ;
+		op1 = o1;
+		op2 = o2;
 		
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String getOperador() {
+		return operador;
+	}
+
+	public void setOperador(String operador) {
+		this.operador = operador;
+	}
+
+	public String getOp1() {
+		return op1;
+	}
+
+	public void setOp1(String op1) {
+		this.op1 = op1;
+	}
+
+	public String getOp2() {
+		return op2;
+	}
+
+	public void setOp2(String op2) {
+		this.op2 = op2;
+	}
+
+	public boolean equalstype()
+	{
+		
+	}
 	
-//	public void print (int level){
-//		int a = 0;
-//		if (this != null){
-//			while (a < level){
-//				main.printTree("           ", false);
-//				a++;
-//			}
-//			main.printTree(value, true);
-//			level++;
-//			if (this.esNodo()){
-//				if(this.left!=null)
-//					this.left.print(level);
-//				if(this.right!=null)
-//					this.right.print(level);
-//			}
-//		}
-//	}
 }
+*/

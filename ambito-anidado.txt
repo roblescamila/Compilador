@@ -1,16 +1,15 @@
 FLOAT m;
-a{
-INT k;
-GLOBAL b,c,d;
-INT f;
-GLOBAL t;
-b = 123_i;
-c = 12_i;
-d = b + c;
-	j{
-		GLOBAL x,y,z;
-		x = 123_i;
-		y = 12_i;
-		z = b + c;	
-	}
+w {
+
+FLOAT x,y,z;
+//x = 32767_i;//
+//y = -32768_i;//
+z = x + y;
+yyy {
+FLOAT x,y,z;
+GLOBAL x, y;
+//x = 32767_i;//
+//y = -32768_i;//
+z = x + y;
+}
 }

@@ -1,20 +1,4 @@
-INT a,b,c;
-
-STRING asd;
-FLOAT m;
-w{
-FLOAT x,y,z;
-x = 123_i;
-y = 12_i;
-z = x + y;
-}
-LOOP FROM a = b TO c BY b
-BEGIN
-	IF (a == c) THEN
-	BEGIN
-		a = h; 
-	END
-	ENDIF
-END
-
-PRINT ('carlos');
+INT a;
+s= 444_i;
+a = 1.232321e454;
+s= 3544444_i;

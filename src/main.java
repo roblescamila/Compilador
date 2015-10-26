@@ -6,8 +6,9 @@ import java.io.IOException;
 public class main {
 	public static void main(String[] args) throws IOException {
 		Messages msg = new Messages();
+		
 		//String a = args[0].toString();
-		File archivo = new File ("archivo.txt");
+		File archivo = new File ("a.txt");
 		FileReader fr = new FileReader (archivo);
 		BufferedReader br = new BufferedReader(fr);
 		String linea = new String();
@@ -23,21 +24,12 @@ public class main {
         analizadorSintactico.setLexico(al);
         analizadorSintactico.setMensajes(msg);
         analizadorSintactico.run();
-        
         msg.sintacticStructure();
         msg.warning();
         msg.error();
         System.out.println();
         System.out.println("Tabla de símbolos");
-		System.out.println();	
-
+		System.out.println();
         al.print();   
 	}
-	
-//	public static void printTree(String s, boolean n) {
-//		if (n)
-//			textoArbol.append(s + "\n");
-//		else
-//			textoArbol.append(s);
-//	}
 }

@@ -60,10 +60,10 @@ public class AnalizadorLexico {
         if (eof && !end){
             msg.SymbolsTable();
             end = true;
-            return EOF;
+            return EOF; 
         }
         if (eof && end)
-            return 0;
+        	return 0;
         return token.getId().intValue();
     }
 
@@ -308,6 +308,7 @@ public class AnalizadorLexico {
 	        case 102: return "Carácter no identificado. Error número 102.";
 	        case 103: return "Construcción de token erróneo. Error número 103.";
 	        case 104: return "Constante entero fuera de rango permitido. Error número 104.";
+	        case 105: return "Constante fuera de rango permitido. Error número 105.";
 	        
 	        // Estructuras Sintacticas
 	        case 201: return "Sentencia declarativa.";

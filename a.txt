@@ -7,7 +7,7 @@ INT v;
 a = 123_i;
 b = 12_i;
 c = 1_i;
-m = .32;
+z= -1.17565542e411;
 //comentario//
 LOOP FROM a = b TO c BY b
 BEGIN
@@ -21,7 +21,7 @@ GLOBAL b,c,d;
 b = 123_i;
 c = 12_i;
 d = b + c;
-	
+
 IF (a == b) THEN a = b;
 ENDIF
 }
@@ -36,6 +36,7 @@ BEGIN
 	b = a;
 END
 ENDIF
+	x = -32768_i;
 
-x = -12325_i;
-v = -124545454545454544454454e-2;
+
+

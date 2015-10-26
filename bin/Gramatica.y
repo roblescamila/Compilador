@@ -3,27 +3,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 %}
 
-%token IF
-%token THEN
-%token ELSE
-%token ENDIF
-%token PRINT
-%token INT
-%token LOOP
-%token TO
-%token ID
-%token CONSTANT
-%token FLOAT
-%token STRING
-%token COMPARATOR
-%token ASIGNATION
-%token END
-%token GLOBAL
-%token BEGIN
-%token FROM
-%token TOFLOAT
-%token EOF
-%token BY
+%token IF THEN ELSE ENDIF PRINT INT LOOP TO ID CONSTANT FLOAT STRING COMPARATOR ASIGNATION END GLOBAL BEGIN FROM TOFLOAT EOF BY
 
 /* GRAMATICA */
 %%
@@ -49,7 +29,7 @@ declaration : type var_list ';' 	{ES s = new ES(analyzer.getLine(), analyzer.get
 											}
 										}
 										
-			| type var_list 		{Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
+			| type var_list error	{Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 			| error var_list ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(5),"Sintactico"); msj.addError(e);}
 			| type error ';' 			{Error e = new Error(analyzer.getLine(),analyzer.getMessage(6),"Sintactico"); msj.addError(e);}
 ;
@@ -79,10 +59,6 @@ exe : exe sentence
 	| exe ambit
 	| sentence
 	| ambit
-;
-
-exe_sentences : exe_sentences sentence  
-			  | sentence 
 ;
 
 sentence : asignation
@@ -139,11 +115,11 @@ ambit_dec_sentence	:	declaration
                       |	GLOBAL var_list ';'
 ; 
  
-ambit : ID '{' ambit_declarations exe_sentences '}' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
-	  | ID '{' exe_sentences '}' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
-	  | error '{' ambit_declarations exe_sentences '}' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(17),"Sintactico"); msj.addError(e);}
+ambit : ID '{' ambit_declarations exe '}' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
+	  | ID '{' exe '}' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
+	  | error '{' ambit_declarations exe '}' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(17),"Sintactico"); msj.addError(e);}
 	  | ID '{' ambit_declarations error '}' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(2),"Sintactico"); msj.addError(e);}
-	  | ID '{' ambit_declarations exe_sentences error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(16),"Sintactico"); msj.addError(e);}
+	  | ID '{' ambit_declarations exe error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(16),"Sintactico"); msj.addError(e);}
 ;
 
 condition: '(' expression COMPARATOR expression ')' 
@@ -175,30 +151,102 @@ term : term '*' factor
 		| factor
 ;
 
-factor : CONSTANT
+factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
+					TSEntry entry = (TSEntry)table.getTable().get(newLexema);
+					boolean anda = false;
+					String a =	entry.getType();
+					System.out.println(a);
+					if (a == "INT"){
+						Long e = Long.valueOf(newLexema);
+						if ( e.longValue() <= Short.MAX_VALUE )
+							anda = true;
+						else{
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+							msj.addError(er);
+						}
+					}
+					else{
+						Double f = Double.valueOf(newLexema);								
+						if (f.doubleValue() >= 1.17549435E-38 && f.doubleValue() <= 3.40282347E38)
+							anda = true;
+						else{
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+							msj.addError(er);
+						}
+					}
+					if (anda){
+						if (entry.getRefCounter() == 1){
+							if (table.getTable().contains(newLexema))
+								((TSEntry)table.getTable().get(newLexema)).incCounter();
+							else {	 
+							TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+								table.addTSEntry(newEntry.getLexema(), newEntry);
+								newEntry.setType(a);
+							}
+							table.getTable().remove(newLexema);
+						}
+						else {
+							entry.decCounter();
+							if (table.getTable().containsKey(newLexema))
+								((TSEntry)table.getTable().get(newLexema)).incCounter();
+							else {   
+								TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+								table.addTSEntry(newEntry.getLexema(), newEntry);
+								newEntry.setType(a);
+							}
+						}
+					}  
+					$$.obj = table.getTable().get(newLexema);
+				}	
 	   | ID
-	   | '-' CONSTANT		{	String lexema = ((Token)$2.obj).getLexema();
+	   | '-' CONSTANT	{	String lexema = ((Token)$2.obj).getLexema();
 							TSEntry entry = (TSEntry)table.getTable().get(lexema);
 							String newLexema = "-" + lexema;
-							if (entry.getRefCounter() == 1){
-								if (table.getTable().contains(newLexema))
-									((TSEntry)table.getTable().get(newLexema)).incCounter();
-								else {	TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
-										table.addTSEntry(newEntry.getLexema(), newEntry);
-										newEntry.setType("CONSTANTE");
+							boolean anda = false;
+					
+							String a =	entry.getType();
+									System.out.println(a);
+							if (a == "INT"){
+								Long e = Long.valueOf(newLexema);
+								if ( e.longValue() >= Short.MIN_VALUE )
+									anda = true;
+								else
+								{    
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+									msj.addError(er);
 								}
-								table.getTable().remove(lexema);
 							}
-							else {
-								entry.decCounter();
-								if (table.getTable().containsKey(newLexema))
-									((TSEntry)table.getTable().get(newLexema)).incCounter();
-								else{
+							else{	
+								Double f = Double.valueOf(newLexema);								
+								if ((f.doubleValue() )<= -1.17549435E-38 && (f.doubleValue() ) >= -3.40282347E38)
+									anda = true;
+								else{    
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+									msj.addError(er);
+								}
+							}
+							if (anda){
+								if (entry.getRefCounter() == 1){   
+									if (table.getTable().contains(newLexema))
+										((TSEntry)table.getTable().get(newLexema)).incCounter();
+									else {	 
 									TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
-									table.addTSEntry(newEntry.getLexema(), newEntry);
-									newEntry.setType("CONSTANTE");
+											table.addTSEntry(newEntry.getLexema(), newEntry);
+											newEntry.setType(a);
+									}
+									table.getTable().remove(lexema);
 								}
-							}
+								else {    
+									entry.decCounter();
+									if (table.getTable().containsKey(newLexema))
+										((TSEntry)table.getTable().get(newLexema)).incCounter();
+									else {   
+										TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+										table.addTSEntry(newEntry.getLexema(), newEntry);
+										newEntry.setType(a);
+									}
+								}
+							}  
 							$$.obj = table.getTable().get(newLexema);
 						}				
 		| STRING
@@ -214,24 +262,14 @@ void yyerror(String s) {
 AnalizadorLexico analyzer;
 Messages msj;
 TS table;
-Vector<Token> vt = new Vector<Token>() ;
-SyntacticTree tree = new SyntacticTree (); ;
 
 public void setLexico(AnalizadorLexico al) {
 	analyzer = al;
 	table = al.getTS();
 }
 
-public void setMessages(Messages ms) {
+public void setMensajes(Messages ms) {
 	msj = ms;
-}
-
-public void setTree ( SyntacticTree a ){
-	tree = a ;
-}
-
-public SyntacticTree getTree (){
-	return tree ;
 }
 
 int yylex()

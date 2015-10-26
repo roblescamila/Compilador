@@ -13,10 +13,11 @@ public class SA9 extends SemanticAction {
 		}
 
 		public Token execute(Token token, char c) {
-			token.setId(CONSTANT);
-			float e = Float.valueOf(token.getLexema().replace('.', ' ').replace('0', ' '));
+			token.setId(CONSTANT); 
+
+			Long e = Long.valueOf(token.getLexema());
 			token.setLexema(String.valueOf(e));
-			if(e >= Short.MIN_VALUE && e <= Short.MAX_VALUE) { 
+//			if(e.longValue() <= Short.MAX_VALUE) { 
 				if(ts.hasLexema(token.getLexema())) {
 					ts.getTSEntry(token.getLexema()).incCounter();
 					token.setTSEntry(ts.getTSEntry(token.getLexema()));
@@ -24,13 +25,13 @@ public class SA9 extends SemanticAction {
 				else {
 					token.setId(CONSTANT);
 					ts.addTSEntry(token.getLexema(), token.getETS());
-					ts.getTSEntry(token.getLexema()).setType("CONSTANTE");
-				}	
-			}
-			else {
-				Error u = new Error(al.getLine(), al.getMessage(104), "Léxico"); 
-				ms.addError(u);
-			}
+					ts.getTSEntry(token.getLexema()).setType("INT");
+				}
+//			}
+//			else {
+//				Error u = new Error(al.getLine(), al.getMessage(104), "Léxico"); 
+//				ms.addError(u);
+//			}
 			token.readCharAdded();
 			return token;
 		}
