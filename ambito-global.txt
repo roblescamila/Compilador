@@ -1,8 +1,9 @@
 FLOAT m;
 a{
-INT j;
 GLOBAL b,c,d;
+INT j;
+
 b = 123_i;
 c = 12_i;
-d = b +;
+d = b + c ;
 }

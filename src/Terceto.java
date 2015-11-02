@@ -1,22 +1,34 @@
-/*
+
 public class Terceto {
 
-	int num;
+	int id;
 	String operador, op1, op2;
+	String type;
+
+	public Terceto(int i, String op, String op1, String op2){
+		this.operador = op;
+		this.op1 = op1;
+		this.op2 = op2;
+		this.id = i;
+	}
+
 	
-	public Terceto(String opera, String o1 , String o2){
-		operador = opera ;
-		op1 = o1;
-		op2 = o2;
-		
+	public String getType() {
+		return type;
 	}
 
-	public int getNum() {
-		return num;
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public void setNum(int num) {
-		this.num = num;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getOperador() {
@@ -42,11 +54,9 @@ public class Terceto {
 	public void setOp2(String op2) {
 		this.op2 = op2;
 	}
-
-	public boolean equalstype()
-	{
-		
+	
+	public void imprimir (){
+		System.out.println(this.id + ": (" + this.operador + ", " + this.op1 + ", " + this.op2 + ")" );
 	}
 	
 }
-*/

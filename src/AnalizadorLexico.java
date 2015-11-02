@@ -150,7 +150,7 @@ public class AnalizadorLexico {
 		SA8 = new SA8(msg,this);
 		SA9 = new SA9(symbTable, this, msg);
 		SA10 = new SA10();
-		SA11 = new SA11(msg, this);
+		SA11 = new SA11(symbTable,msg, this);
 		SA12 = new SA12(symbTable, this, msg);
 		SA13 = new SA13(symbTable, msg, this);
 
@@ -319,6 +319,14 @@ public class AnalizadorLexico {
 	        case 206: return "Bloque de sentencias.";
 	        case 207: return "Ámbito con nombre.";
 	        case 208: return "Conversión explícita.";		
+	        
+	        //Errores Semanticos
+	        case 301: return "Variable no declarada. Error número 301.";
+	        case 302: return "No se puede realizar la operacion. Tipos incompatibles. Error número 302.";
+	        case 303: return "Construcción de token erróneo. Error número 3103.";
+	        case 304: return "Constante entero fuera de rango permitido. Error número 3104.";
+	        case 305: return "Constante fuera de rango permitido. Error número 305.";
+	        
 		}
 	    return null;
 	}	

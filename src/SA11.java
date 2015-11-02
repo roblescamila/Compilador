@@ -1,26 +1,58 @@
 public class SA11 extends SemanticAction { 
 
-		private Messages ms;
+		private Messages m;
 	    private AnalizadorLexico al;
+		private TS ts;
 
-	    public SA11(Messages m, AnalizadorLexico a) {
-	        ms = m;
+	    public SA11(TS ts,Messages ms, AnalizadorLexico a) {
+	        m = ms;
 	        al = a;
+			this.ts = ts;
+
 	    }
 
 	    public Token execute(Token token, char c) {
-	        token = new Token();
-	        int aux = entry(c);
-	        if (aux == 22){
-	            token.readCharAdded();
-	            Error e = new Error(al.getLine(), al.getMessage(102), "Léxico");
-	            ms.addError(e);
-	        }
-	        else{
-		    	  Error e = new Error(al.getLine(), al.getMessage(103), "Léxico");
-		    	  ms.addError(e);
-	        }
-	        return token;
+	    	if (entry(c) == 22) 	    	{
+	    		token.addChar(c);
+	    	 m.token(al.getLine(), "No identificado");
+	    	 m.token(al.getLine(), token.getLexema());
+	         token.setId((short) 400);
+	    	 Error e = new Error(al.getLine(), al.getMessage(102), "Léxico");
+	    	  m.addError(e);}
+	    	else{	
+	    	token.addChar(c);
+	    	if (ts.hasLexema(token.getLexema())){
+		        token.readCharNotAdded();
+		        token.setTSEntry(ts.getTSEntry(token.getLexema()));
+		        m.token(al.getLine(), token.getLexema());
+		        return token;
+		    }
+		    else {
+		            token.setId((short) 404);
+		 
+		       
+		        m.token(al.getLine(), token.getLexema());
+		        token.readCharNotAdded();    
+		       
+		        }
+			Error e = new Error(al.getLine(), al.getMessage(103), "Léxico");
+  m.addError(e);}
+			return token;
+//			
+//	    	token = new Token();
+//	        int aux = entry(c);
+//	        if (aux == 22){
+////	            token.readCharAdded();
+//	            Error e = new Error(al.getLine(), al.getMessage(102), "Léxico");
+//	            ms.addError(e);
+//	        }
+//	        else{
+//		    	  Error e = new Error(al.getLine(), al.getMessage(103), "Léxico");
+//		    	  ms.addError(e); 
+//		    	  
+//	        }
+//            token.readCharAdded();
+//	        return token;
 	    }
 
 		public int entry(int caracter) {

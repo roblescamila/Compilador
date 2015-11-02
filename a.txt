@@ -5,9 +5,9 @@ FLOAT x;
 INT v;
 //comentario//
 a = 123_i;
-b = 12_i;
-c = 1_i;
-z= -1.17565542e411;
+b = 1_i;
+c = -1_i;
+z= 1.17565542e38;
 //comentario//
 LOOP FROM a = b TO c BY b
 BEGIN
@@ -18,25 +18,21 @@ END
 //comentario//
 h{
 GLOBAL b,c,d;
-b = 123_i;
-c = 12_i;
-d = b + c;
-
-IF (a == b) THEN a = b;
+IF (a == b) THEN 
+	a = b;
 ENDIF
 }
 //comentario//
 TOFLOAT (a);
 IF (a == b) THEN
 BEGIN
-	a = b;
+	a = a - b / d - c;	
 END
 ELSE
 BEGIN
 	b = a;
 END
 ENDIF
-	x = -32768_i;
+	x = -367_i;
 
-
-
+PRINT('plsd');

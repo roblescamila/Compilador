@@ -2,8 +2,8 @@ FLOAT m;
 w {
 
 FLOAT x,y,z;
-//x = 32767_i;//
-//y = -32768_i;//
+x = 32768_i;
+y = -32769_i;
 z = x + y;
 yyy {
 FLOAT x,y,z;
@@ -11,5 +11,4 @@ GLOBAL x, y;
 //x = 32767_i;//
 //y = -32768_i;//
 z = x + y;
-}
 }

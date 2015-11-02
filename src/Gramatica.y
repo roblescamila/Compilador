@@ -20,14 +20,12 @@ declarations : declarations declaration
 ;
 
 declaration : type var_list ';' 	{ES s = new ES(analyzer.getLine(), analyzer.getMessage(201)); msj.addStructure(s);
-											Enumeration e = ((Vector<Token>)$2.obj).elements();
-											while (e.hasMoreElements()){
-												Token token = (Token)e.nextElement();
-												if (token.getETS().getType() == null){
-													token.getETS().setType(token.getType());
-												}
-											}
-										}
+									Enumeration e = ((Vector<Token>)$2.obj).elements();
+									while (e.hasMoreElements()){
+										Token token = (Token)e.nextElement();
+										token.getETS().setType(((Token) $1.obj).getLexema());
+									}
+									}
 										
 			| type var_list error	{Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 			| error var_list ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(5),"Sintactico"); msj.addError(e);}
@@ -69,7 +67,14 @@ sentence : asignation
 		  | error ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(15),"Sintactico"); msj.addError(e);}
 ;
 
-asignation: ID ASIGNATION expression ';' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(202)); msj.addStructure(s);}
+asignation: ID ASIGNATION expression ';' {	ES es = new ES(analyzer.getLine(), analyzer.getMessage(202)); 
+											msj.addStructure(es); //TODO: chequear declaraciones
+											String op1 = ((Token)$1.obj).getLexema();
+											String op2 = (String)$3.obj;
+											Terceto t = new Terceto(s.size(), "=", op1, op2);
+											s.add(t);
+											$$.obj = t;
+											}
 		  | ID ASIGNATION expression error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 		  | error ASIGNATION expression ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(7),"Sintactico"); msj.addError(e);}
 		  | error ASIGNATION expression {Error e = new Error(analyzer.getLine(),analyzer.getMessage(8),"Sintactico"); msj.addError(e);}
@@ -130,38 +135,117 @@ condition: '(' expression COMPARATOR expression ')'
 		|  '(' expression COMPARATOR error ')' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 ;
 
-print: PRINT '(' STRING ')' ';' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(205)); msj.addStructure(s);}
+print: PRINT '(' STRING ')' ';' {	ES es = new ES(analyzer.getLine(), analyzer.getMessage(205)); 
+									msj.addStructure(es);
+									String lexema = ((Token)$3.obj).getLexema();
+									Terceto t = new Terceto (s.size(), "PRINT", lexema, "");
+									s.add(t);
+									$$.obj = t;
+								}
 	 | PRINT '(' STRING ')' error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 	 | PRINT '(' error ')' ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
 	 | error '(' STRING ')' ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(14),"Sintactico"); msj.addError(e);}
 ;
 
-conversion: TOFLOAT '(' expression ')' ';' {ES s = new ES(analyzer.getLine(), analyzer.getMessage(208)); msj.addStructure(s);}
+conversion: TOFLOAT '(' expression ')' ';' {ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
+											msj.addStructure(es);
+											String lexema = (String)$3.obj;
+											Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "");
+											s.add(t);
+											$$.obj = t;
+											}
 		  | TOFLOAT '(' expression ')' error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 		  | TOFLOAT '(' error ')' ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
 ;
 
-expression : expression '+' term
-		  | expression '-' term
-		  | term
+expression : expression '+' term { 	
+									String string = (String)$1.obj;
+									String subst = string.substring(1,string.length()-1);
+									TSEntry op1 = table.getTSEntry((String)$1.obj);
+									TSEntry op2 = table.getTSEntry((String)$3.obj);
+									Terceto viejo = s.get(subst);
+									Terceto t = new Terceto(s.size(),"+", (String)$1.obj, (String)$3.obj);
+									t.setType(op2.getType());
+									$$.obj = "[" + t.getId() + "]";
+									s.add(t);
+									if (!viejo.getType().equals(op2.getType())){ 									
+										Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+										msj.addError(er);
+										t.setType("error");
+									}
+								}
+		  | expression '-' term { 	
+									String string = (String)$1.obj;
+									String subst = string.substring(1,string.length()-1);
+									TSEntry op1 = table.getTSEntry((String)$1.obj);
+									TSEntry op2 = table.getTSEntry((String)$3.obj);
+									Terceto viejo = s.get(subst);
+									Terceto t = new Terceto(s.size(),"-", (String)$1.obj, (String)$3.obj);
+									t.setType(op2.getType());
+									$$.obj = "[" + t.getId() + "]";
+									s.add(t);
+									if (!viejo.getType().equals(op2.getType())){ 
+										Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+										msj.addError(er);
+										t.setType("error");
+									}
+								}
+		  | term {
+					$$.obj = ((String)$1.obj);
+				}
 ;
 
-term : term '*' factor
-		| term '/' factor
-		| factor
+term : term '*' factor { 	TSEntry op1 = table.getTSEntry((String)$1.obj);
+							TSEntry op2 = table.getTSEntry((String)$3.obj);
+							Terceto t = new Terceto(s.size(),"*", (String)$1.obj, (String)$3.obj);
+							t.setType(op2.getType());
+							$$.obj = "[" + t.getId() + "]";
+							s.add(t);
+							if (!op1.getType().equals(op2.getType())){ 
+								Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+								msj.addError(er);
+								t.setType("error");
+							}
+						}
+		| term '/' factor { 
+							TSEntry op1 = table.getTSEntry((String)$1.obj);
+							TSEntry op2 = table.getTSEntry((String)$3.obj);
+							Terceto t = new Terceto(s.size(), "/", (String)$1.obj, (String)$3.obj);
+							t.setType(op2.getType());
+							$$.obj = "[" + t.getId() + "]"; 
+							s.add(t);
+							if (!op1.getType().equals(op2.getType())){ 
+								Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+								msj.addError(er);
+								t.setType("error");
+
+							}
+						}					
+		| factor { 
+					String s1 = (String) $1.obj;
+					TSEntry entry = table.getTSEntry(s1);
+					try {
+						if ((!table.hasLexema(s1) || !entry.isDeclared()) && entry.getId() == 265){
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico"); 
+							msj.addError(er);
+						}
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+					}
+					yyval.obj = s1;
+				}
 ;
 
 factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 					TSEntry entry = (TSEntry)table.getTable().get(newLexema);
 					boolean anda = false;
 					String a =	entry.getType();
-					System.out.println(a);
 					if (a == "INT"){
 						Long e = Long.valueOf(newLexema);
 						if ( e.longValue() <= Short.MAX_VALUE )
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 							msj.addError(er);
 						}
 					}
@@ -170,10 +254,12 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 						if (f.doubleValue() >= 1.17549435E-38 && f.doubleValue() <= 3.40282347E38)
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 							msj.addError(er);
+				
 						}
 					}
+					if (!anda)	table.getTable().remove(newLexema);
 					if (anda){
 						if (entry.getRefCounter() == 1){
 							if (table.getTable().contains(newLexema))
@@ -183,7 +269,6 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 								table.addTSEntry(newEntry.getLexema(), newEntry);
 								newEntry.setType(a);
 							}
-							table.getTable().remove(newLexema);
 						}
 						else {
 							entry.decCounter();
@@ -196,45 +281,53 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 							}
 						}
 					}  
-					$$.obj = table.getTable().get(newLexema);
+					$$.obj = newLexema;
 				}	
-	   | ID
-	   | '-' CONSTANT	{	String lexema = ((Token)$2.obj).getLexema();
+	   | ID { String lexema = ((Token)$1.obj).getLexema();
+			  $$.obj = lexema;
+			}
+	   | '-' CONSTANT	{	
+							String lexema = ((Token)$2.obj).getLexema();
 							TSEntry entry = (TSEntry)table.getTable().get(lexema);
 							String newLexema = "-" + lexema;
 							boolean anda = false;
-					
 							String a =	entry.getType();
-									System.out.println(a);
 							if (a == "INT"){
 								Long e = Long.valueOf(newLexema);
 								if ( e.longValue() >= Short.MIN_VALUE )
 									anda = true;
 								else
 								{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 									msj.addError(er);
+								
 								}
 							}
-							else{	
+							else {	
 								Double f = Double.valueOf(newLexema);								
-								if ((f.doubleValue() )<= -1.17549435E-38 && (f.doubleValue() ) >= -3.40282347E38)
+								if (f.doubleValue() <= -1.17549435E-38 && f.doubleValue() >= -3.40282347E38)
 									anda = true;
 								else{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 									msj.addError(er);
+									
 								}
 							}
+							if (!anda){
+								table.getTable().remove(newLexema);
+									table.getTable().remove(lexema);}
 							if (anda){
 								if (entry.getRefCounter() == 1){   
-									if (table.getTable().contains(newLexema))
+									if (table.getTable().contains(newLexema)){
 										((TSEntry)table.getTable().get(newLexema)).incCounter();
-									else {	 
-									TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+									//table.getTable().remove(lexema);
+									}else {	 
+											TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
 											table.addTSEntry(newEntry.getLexema(), newEntry);
 											newEntry.setType(a);
+											table.getTable().remove(lexema);
 									}
-									table.getTable().remove(lexema);
+									
 								}
 								else {    
 									entry.decCounter();
@@ -247,7 +340,7 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 									}
 								}
 							}  
-							$$.obj = table.getTable().get(newLexema);
+							$$.obj = newLexema;
 						}				
 		| STRING
 ;
@@ -262,10 +355,12 @@ void yyerror(String s) {
 AnalizadorLexico analyzer;
 Messages msj;
 TS table;
+Stack s;
 
-public void setLexico(AnalizadorLexico al) {
+public void setLexico(AnalizadorLexico al, Stack s) {
 	analyzer = al;
 	table = al.getTS();
+	this.s = s;
 }
 
 public void setMensajes(Messages ms) {

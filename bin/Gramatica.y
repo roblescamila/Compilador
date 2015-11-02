@@ -155,14 +155,14 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 					TSEntry entry = (TSEntry)table.getTable().get(newLexema);
 					boolean anda = false;
 					String a =	entry.getType();
-					System.out.println(a);
 					if (a == "INT"){
 						Long e = Long.valueOf(newLexema);
 						if ( e.longValue() <= Short.MAX_VALUE )
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 							msj.addError(er);
+							table.getTable().remove(newLexema);
 						}
 					}
 					else{
@@ -170,8 +170,9 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 						if (f.doubleValue() >= 1.17549435E-38 && f.doubleValue() <= 3.40282347E38)
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 							msj.addError(er);
+							table.getTable().remove(newLexema);
 						}
 					}
 					if (anda){
@@ -183,7 +184,6 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 								table.addTSEntry(newEntry.getLexema(), newEntry);
 								newEntry.setType(a);
 							}
-							table.getTable().remove(newLexema);
 						}
 						else {
 							entry.decCounter();
@@ -203,26 +203,26 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 							TSEntry entry = (TSEntry)table.getTable().get(lexema);
 							String newLexema = "-" + lexema;
 							boolean anda = false;
-					
 							String a =	entry.getType();
-									System.out.println(a);
 							if (a == "INT"){
 								Long e = Long.valueOf(newLexema);
 								if ( e.longValue() >= Short.MIN_VALUE )
 									anda = true;
 								else
 								{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 									msj.addError(er);
+									table.getTable().remove(lexema);
 								}
 							}
 							else{	
 								Double f = Double.valueOf(newLexema);								
-								if ((f.doubleValue() )<= -1.17549435E-38 && (f.doubleValue() ) >= -3.40282347E38)
+								if (f.doubleValue() <= -1.17549435E-38 && f.doubleValue() >= -3.40282347E38)
 									anda = true;
 								else{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 									msj.addError(er);
+									table.getTable().remove(lexema);
 								}
 							}
 							if (anda){
@@ -230,11 +230,10 @@ factor : CONSTANT {	String newLexema = ((Token)$1.obj).getLexema();
 									if (table.getTable().contains(newLexema))
 										((TSEntry)table.getTable().get(newLexema)).incCounter();
 									else {	 
-									TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+											TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
 											table.addTSEntry(newEntry.getLexema(), newEntry);
 											newEntry.setType(a);
 									}
-									table.getTable().remove(lexema);
 								}
 								else {    
 									entry.decCounter();

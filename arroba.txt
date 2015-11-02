@@ -1,4 +1,4 @@
-STRING @a@@;
+STRING @aaaaaa;
 INT a,b,c;
 PRINT('pruebaprint');
 a = 123_i;

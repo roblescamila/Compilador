@@ -2,4 +2,4 @@ INT a,b,c;
 a = 123_i;
 b = 12_i;
 c = 1_i;
-TOFLOAT (a);
+TOFLOAT (c);

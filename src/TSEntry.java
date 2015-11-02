@@ -47,7 +47,7 @@ public class TSEntry {
 
 	public String getLexema() {
 		return lexema;
-	}
+	}	
 
 	public void setLexema(String l) {
 		this.lexema = l;
@@ -60,4 +60,8 @@ public class TSEntry {
 	public String print(){
         return lexema;
     }
+	
+	public boolean isDeclared(){
+		return (type != "ID");
+	}
 }

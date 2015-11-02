@@ -506,7 +506,7 @@ final static String yyrule[] = {
 "factor : STRING",
 };
 
-//#line 256 "Gramatica.y"
+//#line 349 "Gramatica.y"
 
 void yyerror(String s) {
 	if(s.contains("under"))
@@ -516,10 +516,12 @@ void yyerror(String s) {
 AnalizadorLexico analyzer;
 Messages msj;
 TS table;
+Stack s;
 
-public void setLexico(AnalizadorLexico al) {
+public void setLexico(AnalizadorLexico al, Stack s) {
 	analyzer = al;
 	table = al.getTS();
+	this.s = s;
 }
 
 public void setMensajes(Messages ms) {
@@ -534,7 +536,7 @@ int yylex()
 	
 	return val;
 }
-//#line 466 "Parser.java"
+//#line 468 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -703,29 +705,27 @@ break;
 case 7:
 //#line 22 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(201)); msj.addStructure(s);
-											Enumeration e = ((Vector<Token>)val_peek(1).obj).elements();
-											while (e.hasMoreElements()){
-												Token token = (Token)e.nextElement();
-												if (token.getETS().getType() == null){
-													token.getETS().setType(token.getType());
-												}
-											}
-										}
+									Enumeration e = ((Vector<Token>)val_peek(1).obj).elements();
+									while (e.hasMoreElements()){
+										Token token = (Token)e.nextElement();
+										token.getETS().setType(((Token) val_peek(2).obj).getLexema());
+									}
+									}
 break;
 case 8:
-//#line 32 "Gramatica.y"
+//#line 30 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 break;
 case 9:
-//#line 33 "Gramatica.y"
+//#line 31 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(5),"Sintactico"); msj.addError(e);}
 break;
 case 10:
-//#line 34 "Gramatica.y"
+//#line 32 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(6),"Sintactico"); msj.addError(e);}
 break;
 case 11:
-//#line 37 "Gramatica.y"
+//#line 35 "Gramatica.y"
 {	Vector<Token> tokens = (Vector<Token>)val_peek(2).obj;
 										Token token = (Token)val_peek(0).obj;
 										token.setType("ID");
@@ -734,7 +734,7 @@ case 11:
 								}
 break;
 case 12:
-//#line 43 "Gramatica.y"
+//#line 41 "Gramatica.y"
 {	Vector<Token> tokens = new Vector<Token>();
 										Token token = (Token)val_peek(0).obj;
 										token.setType("ID");
@@ -743,178 +743,288 @@ case 12:
 								}
 break;
 case 25:
-//#line 69 "Gramatica.y"
+//#line 67 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(15),"Sintactico"); msj.addError(e);}
 break;
 case 26:
-//#line 72 "Gramatica.y"
-{ES s = new ES(analyzer.getLine(), analyzer.getMessage(202)); msj.addStructure(s);}
+//#line 70 "Gramatica.y"
+{	ES es = new ES(analyzer.getLine(), analyzer.getMessage(202)); 
+											msj.addStructure(es); /*TODO: chequear declaraciones*/
+											String op1 = ((Token)val_peek(3).obj).getLexema();
+											String op2 = (String)val_peek(1).obj;
+											Terceto t = new Terceto(s.size(), "=", op1, op2);
+											s.add(t);
+											yyval.obj = t;
+											}
 break;
 case 27:
-//#line 73 "Gramatica.y"
+//#line 78 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 break;
 case 28:
-//#line 74 "Gramatica.y"
+//#line 79 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(7),"Sintactico"); msj.addError(e);}
 break;
 case 29:
-//#line 75 "Gramatica.y"
+//#line 80 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(8),"Sintactico"); msj.addError(e);}
 break;
 case 30:
-//#line 78 "Gramatica.y"
+//#line 83 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(203)); msj.addStructure(s);}
 break;
 case 31:
-//#line 79 "Gramatica.y"
+//#line 84 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(203)); msj.addStructure(s);}
 break;
 case 32:
-//#line 80 "Gramatica.y"
+//#line 85 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(203)); msj.addStructure(s);}
 break;
 case 35:
-//#line 87 "Gramatica.y"
+//#line 92 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(204)); msj.addStructure(s);}
 break;
 case 36:
-//#line 88 "Gramatica.y"
+//#line 93 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(204)); msj.addStructure(s);}
 break;
 case 37:
-//#line 89 "Gramatica.y"
+//#line 94 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(18),"Sintactico"); msj.addError(e);}
 break;
 case 38:
-//#line 90 "Gramatica.y"
+//#line 95 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(19),"Sintactico"); msj.addError(e);}
 break;
 case 39:
-//#line 91 "Gramatica.y"
+//#line 96 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(22),"Sintactico"); msj.addError(e);}
 break;
 case 40:
-//#line 92 "Gramatica.y"
+//#line 97 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(7),"Sintactico"); msj.addError(e);}
 break;
 case 41:
-//#line 93 "Gramatica.y"
+//#line 98 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(22),"Sintactico"); msj.addError(e);}
 break;
 case 42:
-//#line 94 "Gramatica.y"
+//#line 99 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 break;
 case 43:
-//#line 95 "Gramatica.y"
+//#line 100 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(22),"Sintactico"); msj.addError(e);}
 break;
 case 44:
-//#line 96 "Gramatica.y"
+//#line 101 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(21),"Sintactico"); msj.addError(e);}
 break;
 case 45:
-//#line 97 "Gramatica.y"
+//#line 102 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(22),"Sintactico"); msj.addError(e);}
 break;
 case 46:
-//#line 98 "Gramatica.y"
+//#line 103 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(2),"Sintactico"); msj.addError(e);}
 break;
 case 49:
-//#line 105 "Gramatica.y"
+//#line 110 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(206)); msj.addStructure(s);}
 break;
 case 50:
-//#line 106 "Gramatica.y"
+//#line 111 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(9),"Sintactico"); msj.addError(e);}
 break;
 case 51:
-//#line 107 "Gramatica.y"
+//#line 112 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(10),"Sintactico"); msj.addError(e);}
 break;
 case 56:
-//#line 118 "Gramatica.y"
+//#line 123 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
 break;
 case 57:
-//#line 119 "Gramatica.y"
+//#line 124 "Gramatica.y"
 {ES s = new ES(analyzer.getLine(), analyzer.getMessage(207)); msj.addStructure(s);}
 break;
 case 58:
-//#line 120 "Gramatica.y"
+//#line 125 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(17),"Sintactico"); msj.addError(e);}
 break;
 case 59:
-//#line 121 "Gramatica.y"
+//#line 126 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(2),"Sintactico"); msj.addError(e);}
 break;
 case 60:
-//#line 122 "Gramatica.y"
+//#line 127 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(16),"Sintactico"); msj.addError(e);}
 break;
 case 62:
-//#line 126 "Gramatica.y"
+//#line 131 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(11),"Sintactico"); msj.addError(e);}
 break;
 case 63:
-//#line 127 "Gramatica.y"
+//#line 132 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(12),"Sintactico"); msj.addError(e);}
 break;
 case 64:
-//#line 128 "Gramatica.y"
+//#line 133 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(24),"Sintactico"); msj.addError(e);}
 break;
 case 65:
-//#line 129 "Gramatica.y"
+//#line 134 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 break;
 case 66:
-//#line 130 "Gramatica.y"
+//#line 135 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 break;
 case 67:
-//#line 133 "Gramatica.y"
-{ES s = new ES(analyzer.getLine(), analyzer.getMessage(205)); msj.addStructure(s);}
+//#line 138 "Gramatica.y"
+{	ES es = new ES(analyzer.getLine(), analyzer.getMessage(205)); 
+									msj.addStructure(es);
+									String lexema = ((Token)val_peek(2).obj).getLexema();
+									Terceto t = new Terceto (s.size(), "PRINT", lexema, "");
+									s.add(t);
+									yyval.obj = t;
+								}
 break;
 case 68:
-//#line 134 "Gramatica.y"
+//#line 145 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(4),"Sintactico"); msj.addError(e);}
 break;
 case 69:
-//#line 135 "Gramatica.y"
+//#line 146 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
 break;
 case 70:
-//#line 136 "Gramatica.y"
+//#line 147 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(14),"Sintactico"); msj.addError(e);}
 break;
 case 71:
-//#line 139 "Gramatica.y"
-{ES s = new ES(analyzer.getLine(), analyzer.getMessage(208)); msj.addStructure(s);}
+//#line 150 "Gramatica.y"
+{ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
+											msj.addStructure(es);
+											String lexema = (String)val_peek(2).obj;
+											Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "");
+											s.add(t);
+											yyval.obj = t;
+											}
 break;
 case 72:
-//#line 140 "Gramatica.y"
+//#line 157 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 break;
 case 73:
-//#line 141 "Gramatica.y"
+//#line 158 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
 break;
+case 74:
+//#line 161 "Gramatica.y"
+{ 	
+									String string = (String)val_peek(2).obj;
+									String subst = string.substring(1,string.length()-1);
+									TSEntry op1 = table.getTSEntry((String)val_peek(2).obj);
+									TSEntry op2 = table.getTSEntry((String)val_peek(0).obj);
+									Terceto viejo = s.get(subst);
+									Terceto t = new Terceto(s.size(),"+", (String)val_peek(2).obj, (String)val_peek(0).obj);
+									t.setType(op2.getType());
+									yyval.obj = "[" + t.getId() + "]";
+									s.add(t);
+									if (!viejo.getType().equals(op2.getType())){ 									
+										Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+										msj.addError(er);
+										t.setType("error");
+									}
+								}
+break;
+case 75:
+//#line 177 "Gramatica.y"
+{ 	
+									String string = (String)val_peek(2).obj;
+									String subst = string.substring(1,string.length()-1);
+									TSEntry op1 = table.getTSEntry((String)val_peek(2).obj);
+									TSEntry op2 = table.getTSEntry((String)val_peek(0).obj);
+									Terceto viejo = s.get(subst);
+									Terceto t = new Terceto(s.size(),"-", (String)val_peek(2).obj, (String)val_peek(0).obj);
+									t.setType(op2.getType());
+									yyval.obj = "[" + t.getId() + "]";
+									s.add(t);
+									if (!viejo.getType().equals(op2.getType())){ 
+										Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+										msj.addError(er);
+										t.setType("error");
+									}
+								}
+break;
+case 76:
+//#line 193 "Gramatica.y"
+{
+					yyval.obj = ((String)val_peek(0).obj);
+				}
+break;
+case 77:
+//#line 198 "Gramatica.y"
+{ 	TSEntry op1 = table.getTSEntry((String)val_peek(2).obj);
+							TSEntry op2 = table.getTSEntry((String)val_peek(0).obj);
+							Terceto t = new Terceto(s.size(),"*", (String)val_peek(2).obj, (String)val_peek(0).obj);
+							t.setType(op2.getType());
+							yyval.obj = "[" + t.getId() + "]";
+							s.add(t);
+							if (!op1.getType().equals(op2.getType())){ 
+								Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+								msj.addError(er);
+								t.setType("error");
+							}
+						}
+break;
+case 78:
+//#line 210 "Gramatica.y"
+{ 
+							TSEntry op1 = table.getTSEntry((String)val_peek(2).obj);
+							TSEntry op2 = table.getTSEntry((String)val_peek(0).obj);
+							Terceto t = new Terceto(s.size(), "/", (String)val_peek(2).obj, (String)val_peek(0).obj);
+							t.setType(op2.getType());
+							yyval.obj = "[" + t.getId() + "]"; 
+							s.add(t);
+							if (!op1.getType().equals(op2.getType())){ 
+								Error er = new Error(analyzer.getLine(),analyzer.getMessage(302),"Semantico");
+								msj.addError(er);
+								t.setType("error");
+
+							}
+						}
+break;
+case 79:
+//#line 224 "Gramatica.y"
+{ 
+					String s1 = (String) val_peek(0).obj;
+					TSEntry entry = table.getTSEntry(s1);
+					try {
+						if ((!table.hasLexema(s1) || !entry.isDeclared()) && entry.getId() == 265){
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico"); 
+							msj.addError(er);
+						}
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+					}
+					yyval.obj = s1;
+				}
+break;
 case 80:
-//#line 154 "Gramatica.y"
+//#line 239 "Gramatica.y"
 {	String newLexema = ((Token)val_peek(0).obj).getLexema();
 					TSEntry entry = (TSEntry)table.getTable().get(newLexema);
 					boolean anda = false;
 					String a =	entry.getType();
-					System.out.println(a);
 					if (a == "INT"){
 						Long e = Long.valueOf(newLexema);
 						if ( e.longValue() <= Short.MAX_VALUE )
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 							msj.addError(er);
 						}
 					}
@@ -923,10 +1033,12 @@ case 80:
 						if (f.doubleValue() >= 1.17549435E-38 && f.doubleValue() <= 3.40282347E38)
 							anda = true;
 						else{
-							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+							Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 							msj.addError(er);
+				
 						}
 					}
+					if (!anda)	table.getTable().remove(newLexema);
 					if (anda){
 						if (entry.getRefCounter() == 1){
 							if (table.getTable().contains(newLexema))
@@ -936,7 +1048,6 @@ case 80:
 								table.addTSEntry(newEntry.getLexema(), newEntry);
 								newEntry.setType(a);
 							}
-							table.getTable().remove(newLexema);
 						}
 						else {
 							entry.decCounter();
@@ -949,47 +1060,59 @@ case 80:
 							}
 						}
 					}  
-					yyval.obj = table.getTable().get(newLexema);
+					yyval.obj = newLexema;
 				}
 break;
+case 81:
+//#line 286 "Gramatica.y"
+{ String lexema = ((Token)val_peek(0).obj).getLexema();
+			  yyval.obj = lexema;
+			}
+break;
 case 82:
-//#line 202 "Gramatica.y"
-{	String lexema = ((Token)val_peek(0).obj).getLexema();
+//#line 289 "Gramatica.y"
+{	
+							String lexema = ((Token)val_peek(0).obj).getLexema();
 							TSEntry entry = (TSEntry)table.getTable().get(lexema);
 							String newLexema = "-" + lexema;
 							boolean anda = false;
-					
 							String a =	entry.getType();
-									System.out.println(a);
 							if (a == "INT"){
 								Long e = Long.valueOf(newLexema);
 								if ( e.longValue() >= Short.MIN_VALUE )
 									anda = true;
 								else
 								{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(104),"Lexico"); 
 									msj.addError(er);
+								
 								}
 							}
-							else{	
+							else {	
 								Double f = Double.valueOf(newLexema);								
-								if ((f.doubleValue() )<= -1.17549435E-38 && (f.doubleValue() ) >= -3.40282347E38)
+								if (f.doubleValue() <= -1.17549435E-38 && f.doubleValue() >= -3.40282347E38)
 									anda = true;
 								else{    
-									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Sintactico"); 
+									Error er = new Error(analyzer.getLine(),analyzer.getMessage(101),"Lexico"); 
 									msj.addError(er);
+									
 								}
 							}
+							if (!anda){
+								table.getTable().remove(newLexema);
+									table.getTable().remove(lexema);}
 							if (anda){
 								if (entry.getRefCounter() == 1){   
-									if (table.getTable().contains(newLexema))
+									if (table.getTable().contains(newLexema)){
 										((TSEntry)table.getTable().get(newLexema)).incCounter();
-									else {	 
-									TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
+									/*table.getTable().remove(lexema);*/
+									}else {	 
+											TSEntry newEntry = new TSEntry(CONSTANT, newLexema);
 											table.addTSEntry(newEntry.getLexema(), newEntry);
 											newEntry.setType(a);
+											table.getTable().remove(lexema);
 									}
-									table.getTable().remove(lexema);
+									
 								}
 								else {    
 									entry.decCounter();
@@ -1002,10 +1125,10 @@ case 82:
 									}
 								}
 							}  
-							yyval.obj = table.getTable().get(newLexema);
+							yyval.obj = newLexema;
 						}
 break;
-//#line 932 "Parser.java"
+//#line 1055 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

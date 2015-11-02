@@ -16,7 +16,7 @@ public class Token {
 		charAdded = false;
 		refCounter = 1;
 		id = 0; 
-		type = null;		
+		type = null;
 	}
 
 	// Agrega el caracter recibido al final del string
@@ -55,6 +55,10 @@ public class Token {
     
     public void setLexema(String name){
         this.lexema = name;
+    }
+    public boolean vacio(){
+       if (type == null) return true;
+       return false;
     }
     
     public boolean equals(Token t){
