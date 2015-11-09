@@ -517,7 +517,7 @@ final static String yyrule[] = {
 "factor : STRING",
 };
 
-//#line 901 "Gramatica.y"
+//#line 897 "Gramatica.y"
 
 void yyerror(String s) {
 	if(s.contains("under"))
@@ -536,25 +536,27 @@ boolean level_up = false;
 int ambit_level = 0;
 String name;
 Vector<TSEntry> paranombrar = new Vector<TSEntry>() ;
-Vector<String> tiposdevariables  ;
+Vector<String> tiposdevariables;
 String tipo;
 
-public void setLexico(AnalizadorLexico al, Stack s) {
+public void setLexico(AnalizadorLexico al) {
 	analyzer = al;
 	table = al.getTS();
-	this.s = s;
 	names[0] = "0";
 	name="";
 	tiposdevariables = new Vector<String>();
 	tipo ="";
+	s = new Stack(table);
 }
 
-
+public void imprimirStack(){
+	s.imprimir();
+}
 public void resetearambitos( )
 {
  names = new String[100];
  names[0] = "0";
- name="";
+ name = "";
 }
 
 public void setMensajes(Messages ms) {
@@ -566,11 +568,11 @@ int yylex()
 	int val = analyzer.yylex();
 	yylval = new ParserVal(analyzer.getToken());
 	yylval.ival = analyzer.getLine();
-	
+
 	return val;
 }
 //tenemos que ver como hacer para que anden los anidados, no meter dos veces en la tabla de simbolos. las cosas e hacen bien arriba porque agarra el ID a la vuelta
-//#line 502 "Parser.java"
+//#line 504 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1349,54 +1351,50 @@ break;
 case 83:
 //#line 508 "Gramatica.y"
 {
-											ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
-											msj.addStructure(es);
-											String lexema = (String)val_peek(2).obj;
-											Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "-");
-											char c = lexema.charAt(0);
-											if (c == '[') {
-												String subst = lexema.substring(1, lexema.length()-1);
-												Terceto t1 = s.get(subst);
-												if (!t1.getType().equals("FLOAT")){ 	
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
-													msj.addError(er);
-													t.setType("error");
+												ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
+												msj.addStructure(es);
+												String lexema = (String)val_peek(2).obj;
+												Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "-");
+												char c = lexema.charAt(0);
+												if (c == '[') {
+													String subst = lexema.substring(1, lexema.length()-1);
+													Terceto t1 = s.get(subst);
+													if (t1.getType().equals("FLOAT")){ 	
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
+														msj.addError(er);
+														t1.setType("error");
+													}
+													else
+														s.toFloat(t1); /*recorre los tercetos convirtiendo valores a float*/
 												}
 												else{
-													t.setType("FLOAT");
-													/*setear todos los ID a float*/
+													if (!table.hasLexema(lexema)){
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico");
+														msj.addError(er);
+														t.setType("error");
+													}
+													else if (table.getTSEntry(lexema).getType().equals("FLOAT")){ 	
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
+														msj.addError(er);
+														t.setType("error");
+													}
+													else 
+														table.getTSEntry(lexema).setType("FLOAT");	
 												}
-											}
-											else{
-												if (!table.hasLexema(lexema)){
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico");
-													msj.addError(er);
-													System.out.println("XXXXXXXXX");
-													t.setType("error");
-												}
-												else if (table.getTSEntry(lexema).getType().equals("FLOAT")){ 	
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
-													msj.addError(er);
-													t.setType("error");
-												}
-												else {
-													table.getTSEntry(lexema).setType("FLOAT");	
-
-											}}
-											s.add(t);
-											yyval.obj = t;
+												s.add(t);
+												yyval.obj = t;
 											}
 break;
 case 84:
-//#line 546 "Gramatica.y"
+//#line 542 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 break;
 case 85:
-//#line 547 "Gramatica.y"
+//#line 543 "Gramatica.y"
 {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
 break;
 case 86:
-//#line 550 "Gramatica.y"
+//#line 546 "Gramatica.y"
 { 	
 									String string = (String)val_peek(2).obj;
 									String string2 = (String)val_peek(0).obj;
@@ -1468,7 +1466,7 @@ case 86:
 								}
 break;
 case 87:
-//#line 619 "Gramatica.y"
+//#line 615 "Gramatica.y"
 { 	
 									String string = (String)val_peek(2).obj;
 									String string2 = (String)val_peek(0).obj;
@@ -1534,13 +1532,13 @@ case 87:
 								}
 break;
 case 88:
-//#line 682 "Gramatica.y"
+//#line 678 "Gramatica.y"
 {
 					yyval.obj = ((String)val_peek(0).obj);
 				 }
 break;
 case 89:
-//#line 687 "Gramatica.y"
+//#line 683 "Gramatica.y"
 { 	String string = (String)val_peek(2).obj;
 							String string2  =(String)val_peek(0).obj;
 							TSEntry op1 = table.getTSEntry((String)val_peek(2).obj);
@@ -1578,7 +1576,7 @@ case 89:
 						}
 break;
 case 90:
-//#line 722 "Gramatica.y"
+//#line 718 "Gramatica.y"
 { 
 							String string = (String)val_peek(2).obj;
 							String string2  =(String)val_peek(0).obj;
@@ -1617,7 +1615,7 @@ case 90:
 						}
 break;
 case 91:
-//#line 758 "Gramatica.y"
+//#line 754 "Gramatica.y"
 { 
 					String s1 = (String) val_peek(0).obj;
 					TSEntry entry = table.getTSEntry(s1);
@@ -1635,7 +1633,7 @@ case 91:
 				}
 break;
 case 92:
-//#line 775 "Gramatica.y"
+//#line 771 "Gramatica.y"
 { 
 			    String lexema = ((Token)val_peek(0).obj).getLexema();
 				String lex;
@@ -1655,7 +1653,7 @@ case 92:
 			}
 break;
 case 93:
-//#line 792 "Gramatica.y"
+//#line 788 "Gramatica.y"
 {	String newLexema = ((Token)val_peek(0).obj).getLexema();
 					TSEntry entry = (TSEntry)table.getTable().get(newLexema);
 					boolean anda = false;
@@ -1705,7 +1703,7 @@ case 93:
 				}
 break;
 case 94:
-//#line 839 "Gramatica.y"
+//#line 835 "Gramatica.y"
 {	
 							String lexema = ((Token)val_peek(0).obj).getLexema();
 							TSEntry entry = (TSEntry)table.getTable().get(lexema);
@@ -1765,7 +1763,7 @@ case 94:
 							yyval.obj = newLexema;
 						}
 break;
-//#line 1692 "Parser.java"
+//#line 1690 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

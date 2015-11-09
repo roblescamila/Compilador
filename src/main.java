@@ -20,9 +20,9 @@ public class main {
 		valor += "  ";
     	br.close();
         AnalizadorLexico al = new AnalizadorLexico(valor, msg);
-        Stack s = new Stack();
+       
         Parser analizadorSintactico = new Parser();
-        analizadorSintactico.setLexico(al,s);
+        analizadorSintactico.setLexico(al);
         analizadorSintactico.setMensajes(msg);
         analizadorSintactico.run();
         msg.sintacticStructure();
@@ -33,7 +33,7 @@ public class main {
 		System.out.println();
         al.print();   
         System.out.println();
-        s.imprimir();
+        analizadorSintactico.imprimirStack();
         
 	}
 }

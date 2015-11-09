@@ -506,42 +506,38 @@ print: PRINT '(' STRING ')' ';' {	ES es = new ES(analyzer.getLine(), analyzer.ge
 ;
 
 conversion: TOFLOAT '(' expression ')' ';' {
-											ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
-											msj.addStructure(es);
-											String lexema = (String)$3.obj;
-											Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "-");
-											char c = lexema.charAt(0);
-											if (c == '[') {
-												String subst = lexema.substring(1, lexema.length()-1);
-												Terceto t1 = s.get(subst);
-												if (!t1.getType().equals("FLOAT")){ 	
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
-													msj.addError(er);
-													t.setType("error");
+												ES es = new ES(analyzer.getLine(), analyzer.getMessage(208)); 
+												msj.addStructure(es);
+												String lexema = (String)$3.obj;
+												Terceto t = new Terceto (s.size(), "TOFLOAT", lexema, "-");
+												char c = lexema.charAt(0);
+												if (c == '[') {
+													String subst = lexema.substring(1, lexema.length()-1);
+													Terceto t1 = s.get(subst);
+													if (t1.getType().equals("FLOAT")){ 	
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
+														msj.addError(er);
+														t1.setType("error");
+													}
+													else
+														s.toFloat(t1); //recorre los tercetos convirtiendo valores a float
 												}
 												else{
-													t.setType("FLOAT");
-													//setear todos los ID a float
+													if (!table.hasLexema(lexema)){
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico");
+														msj.addError(er);
+														t.setType("error");
+													}
+													else if (table.getTSEntry(lexema).getType().equals("FLOAT")){ 	
+														Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
+														msj.addError(er);
+														t.setType("error");
+													}
+													else 
+														table.getTSEntry(lexema).setType("FLOAT");	
 												}
-											}
-											else{
-												if (!table.hasLexema(lexema)){
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(301),"Semantico");
-													msj.addError(er);
-													System.out.println("XXXXXXXXX");
-													t.setType("error");
-												}
-												else if (table.getTSEntry(lexema).getType().equals("FLOAT")){ 	
-													Error er = new Error(analyzer.getLine(),analyzer.getMessage(307),"Semantico");
-													msj.addError(er);
-													t.setType("error");
-												}
-												else {
-													table.getTSEntry(lexema).setType("FLOAT");	
-
-											}}
-											s.add(t);
-											$$.obj = t;
+												s.add(t);
+												$$.obj = t;
 											}
 		  | TOFLOAT '(' expression ')' error {Error e = new Error(analyzer.getLine(),analyzer.getMessage(23),"Sintactico"); msj.addError(e);}
 		  | TOFLOAT '(' error ')' ';' {Error e = new Error(analyzer.getLine(),analyzer.getMessage(13),"Sintactico"); msj.addError(e);}
@@ -916,25 +912,27 @@ boolean level_up = false;
 int ambit_level = 0;
 String name;
 Vector<TSEntry> paranombrar = new Vector<TSEntry>() ;
-Vector<String> tiposdevariables  ;
+Vector<String> tiposdevariables;
 String tipo;
 
-public void setLexico(AnalizadorLexico al, Stack s) {
+public void setLexico(AnalizadorLexico al) {
 	analyzer = al;
 	table = al.getTS();
-	this.s = s;
 	names[0] = "0";
 	name="";
 	tiposdevariables = new Vector<String>();
 	tipo ="";
+	s = new Stack(table);
 }
 
-
+public void imprimirStack(){
+	s.imprimir();
+}
 public void resetearambitos( )
 {
  names = new String[100];
  names[0] = "0";
- name="";
+ name = "";
 }
 
 public void setMensajes(Messages ms) {
@@ -946,7 +944,7 @@ int yylex()
 	int val = analyzer.yylex();
 	yylval = new ParserVal(analyzer.getToken());
 	yylval.ival = analyzer.getLine();
-	
+
 	return val;
 }
 //tenemos que ver como hacer para que anden los anidados, no meter dos veces en la tabla de simbolos. las cosas e hacen bien arriba porque agarra el ID a la vuelta

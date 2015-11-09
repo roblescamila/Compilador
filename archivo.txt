@@ -1,8 +1,7 @@
 INT c;
-
 amb{
-	INT c;
-	c = 444_i;
-	TOFLOAT(c);
-	
+	INT a,b;
+	b = 1.23;
+	a = 1.24e5;	
+	TOFLOAT(b / a);
 }
