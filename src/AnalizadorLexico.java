@@ -324,9 +324,11 @@ public class AnalizadorLexico {
 	        case 301: return "Variable no declarada. Error número 301.";
 	        case 302: return "No se puede realizar la operacion. Tipos incompatibles. Error número 302.";
 	        case 303: return "Construcción de token erróneo. Error número 3103.";
-	        case 304: return "Constante entero fuera de rango permitido. Error número 3104.";
-	        case 305: return "Constante fuera de rango permitido. Error número 305.";
-	        
+	        case 304: return "Constante entero fuera de rango permitido. Error número 304.";
+	        case 305: return "Constante fuera de rango permitido. Error número 305.";	
+	        case 306: return "La variable ya fue declarada. Error número 306.";
+	        case 307: return "Conversion rechazada. La variable ya es de tipo FLOAT. Error número 307.";
+
 		}
 	    return null;
 	}	

@@ -1,9 +1,11 @@
-FLOAT m;
-a{
-GLOBAL b,c,d;
-INT j;
-
-b = 123_i;
-c = 12_i;
-d = b + c ;
+INT n,nn;
+nn= 1_i;
+cami{
+	FLOAT c,cc,ccc;	
+GLOBAL c;	
+c = cc + ccc;	
+mati{
+	FLOAT cm,cmm;	
+	c = 3_i;
+}
 }

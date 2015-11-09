@@ -1,6 +1,8 @@
-INT r,s,c;
-FLOAT a; 
-r= 444_i;
-a = 1.232321e4;
-s = 3512_i;
-c = r / s * a + a / s;
+INT c;
+
+amb{
+	INT c;
+	c = 444_i;
+	TOFLOAT(c);
+	
+}

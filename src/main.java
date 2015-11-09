@@ -32,6 +32,7 @@ public class main {
         System.out.println("Tabla de símbolos");
 		System.out.println();
         al.print();   
+        System.out.println();
         s.imprimir();
         
 	}

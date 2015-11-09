@@ -61,6 +61,14 @@ public class TSEntry {
         return lexema;
     }
 	
+	
+	
+	public void imprimir ()
+	{
+		System.out.println("lexema + " +lexema +"tipo " + type);
+	}
+	
+	
 	public boolean isDeclared(){
 		return (type != "ID");
 	}

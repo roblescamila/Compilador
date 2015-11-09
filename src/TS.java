@@ -37,6 +37,19 @@ public class TS {
         return this.lexemas.containsKey(lexema);
     }
 
+    
+    public boolean isDeclared(String lexema)
+    {
+    	return lexemas.get(lexema).isDeclared();
+    }
+    
+    public void setKey(String viejo, String nuevo)
+    {
+    	TSEntry a = lexemas.get(viejo);
+    	lexemas.remove(viejo);
+    	lexemas.put(nuevo, a);
+    }
+    
     public TSEntry getTSEntry(String lexema) {
         return this.lexemas.get(lexema);
     }
@@ -49,11 +62,17 @@ public class TS {
         this.lexemas.put(lexema, entry);
     }
     
+
+    
+    public void remove(String lexema) {
+        this.lexemas.remove(lexema);
+    }
+    
     public void showTable(){
         Enumeration<String> e = lexemas.keys();
         while (e.hasMoreElements()){
         	String aux =(String) e.nextElement();
-            System.out.println("Lexema: " + aux + "  Tipo de token: " + lexemas.get(aux).getType());
+            System.out.println("Lexema: " + lexemas.get(aux).getLexema() + "  Tipo de token: " + lexemas.get(aux).getType());
         }
     }  
-}
+ }

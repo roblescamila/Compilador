@@ -19,7 +19,6 @@ public class Stack {
 		return hash;
 	}
 
-
 	public void setHash(Hashtable<String, Terceto> hash) {
 		this.hash = hash;
 	}
@@ -31,7 +30,8 @@ public class Stack {
 	
 	public void imprimir (){
 		System.out.println("Impresion de tercetos");
-		Enumeration<Terceto> e = hash.elements();
+        System.out.println();
+        Enumeration<Terceto> e = hash.elements();
 		Terceto valor;
 		while(e.hasMoreElements()){
 		  valor = (Terceto) e.nextElement();

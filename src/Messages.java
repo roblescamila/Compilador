@@ -15,7 +15,7 @@ public class Messages {
 				else
 					System.out.println("No se pudo compilar. Hay " + errores.size() + " errores." + "\n");
 					for (int i = 0; i < errores.size(); i++)
-						System.out.println("Error de tipo " + errores.elementAt(i).getType() + " en línea " + errores.elementAt(i).getLine() + ": " + errores.elementAt(i).getError());
+						System.out.println("Error " + errores.elementAt(i).getType() + " en línea " + errores.elementAt(i).getLine() + ": " + errores.elementAt(i).getError());
 				}
 			else
 				System.out.println("Compilación satisfactoria.");
