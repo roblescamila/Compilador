@@ -8,7 +8,7 @@ public class main {
 		Messages msg = new Messages();
 		
 		//String a = args[0].toString();
-		File archivo = new File ("archivo.txt");
+		File archivo = new File ("iteracion.txt");
 		FileReader fr = new FileReader (archivo);
 		BufferedReader br = new BufferedReader(fr);
 		String linea = new String();
@@ -20,7 +20,6 @@ public class main {
 		valor += "  ";
     	br.close();
         AnalizadorLexico al = new AnalizadorLexico(valor, msg);
-       
         Parser analizadorSintactico = new Parser();
         analizadorSintactico.setLexico(al);
         analizadorSintactico.setMensajes(msg);
@@ -32,7 +31,6 @@ public class main {
         System.out.println("Tabla de símbolos");
 		System.out.println();
         al.print();   
-        System.out.println();
         analizadorSintactico.imprimirStack();
         
 	}

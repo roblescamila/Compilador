@@ -1,7 +1,4 @@
-INT c;
-amb{
-	INT a,b;
-	b = 1.23;
-	a = 1.24e5;	
-	TOFLOAT(b / a);
-}
+INT a,b,c;
+IF ( a - b == c ) THEN 
+a = b + c;
+ENDIF

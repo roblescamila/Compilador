@@ -17,11 +17,12 @@ public class Terceto {
 		return type;
 	}
 
+
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	
+
 	public int getId() {
 		return id;
 	}

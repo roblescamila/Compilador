@@ -302,6 +302,7 @@ public class AnalizadorLexico {
 	        case 22: return "Falta una variable en iteración. Error número 22.";
 	        case 23: return "Falta expresión. Error número 23."; 
 	        case 24: return "Falta comparador. Error número 24.";
+	        case 25: return "Construccion de expresion erronea. Error número 25.";
 	
 	        //Errores Léxicos
 	        case 101: return "Float fuera de rango. Error número 101.";
@@ -322,12 +323,12 @@ public class AnalizadorLexico {
 	        
 	        //Errores Semanticos
 	        case 301: return "Variable no declarada. Error número 301.";
-	        case 302: return "No se puede realizar la operacion. Tipos incompatibles. Error número 302.";
+	        case 302: return "Tipos incompatibles. Error número 302.";
 	        case 303: return "Construcción de token erróneo. Error número 3103.";
 	        case 304: return "Constante entero fuera de rango permitido. Error número 304.";
 	        case 305: return "Constante fuera de rango permitido. Error número 305.";	
 	        case 306: return "La variable ya fue declarada. Error número 306.";
-	        case 307: return "Conversion rechazada. La variable ya es de tipo FLOAT. Error número 307.";
+	        case 307: return "Conversion abortada. La variable ya fue declarada como FLOAT. Error número 307.";
 
 		}
 	    return null;

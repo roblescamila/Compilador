@@ -8,4 +8,4 @@ mati{
 	FLOAT cm,cmm;	
 	c = 3_i;
 }
-}
+}s

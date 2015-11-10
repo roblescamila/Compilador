@@ -55,7 +55,8 @@ public class Stack {
 				this.toFloat(t1);
 			}
 			if (c == '['){
-				t2 = hash.get(t.getOp1().substring(1,t.getOp1().length()-1));
+				op2 = t.getOp2().substring(1,t.getOp2().length()-1);
+				t2 = hash.get(op2);
 				this.toFloat(t2);
 			}
 		}
